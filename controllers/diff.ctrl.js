@@ -7,7 +7,6 @@ function getItems() {
 }
 
 async function postItem({req, res, next, type}) {
-    console.log(req.body);
     const result =  await item.createItem({content: req.body.content, given_id: req.params.id, type} );
     res.send(result);
 }
@@ -23,7 +22,6 @@ async function checkDiff(req, res, next) {
 }
 
 module.exports = {
-    getItems,
     postItem,
     checkDiff
 };

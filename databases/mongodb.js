@@ -1,20 +1,25 @@
-const config = require('./config');
+const config = require('config');
 const mongoose = require('mongoose');
 
 const log = require('../helpers/log');
 
 mongoose.Promise = Promise;
 
-const dbHost = config.database.data.host;
-const dbPort = config.database.data.port;
-const dbName = config.database.data.db;
+const dbHost = config.get('database.data.host');
+const dbPort = config.get('database.data.port');
+const dbName = config.get('database.data.db');
+const dbURI = `mongodb://${dbHost}:${dbPort}/${dbName}`;
+
+// const dbHost = config.database.data.host;
+// const dbPort = config.database.data.port;
+// const dbName = config.database.data.db;
 
 // const dbHost = 'localhost';
 // const dbPort =
 // const dbName =
-const dbURI = `mongodb://${dbHost}:${dbPort}/${dbName}`;
+//const dbURI = `mongodb://${dbHost}:${dbPort}/${dbName}`;
 
-const reconnectTimeout = config.database.data.reconnectTimeout;
+const reconnectTimeout = config.get('database.data.reconnectTimeout');
 
 function connect() {
   mongoose.connect(dbURI, { auto_reconnect: true })

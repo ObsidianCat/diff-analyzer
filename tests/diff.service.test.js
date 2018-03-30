@@ -1,5 +1,6 @@
 const diffService  = require('../services/diff.service');
 
+
 describe('Test the files comparison service', () => {
     test('The inputs are equal', () => {
         let left = "abc 123";

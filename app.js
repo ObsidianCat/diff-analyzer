@@ -6,7 +6,6 @@ const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const diffRouter = require('./routes/diff.routes');
 const mongoDB = require('./databases/mongodb');
 
@@ -30,7 +29,6 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/v1/diff', diffRouter);
 
 // catch 404 and forward to error handler
