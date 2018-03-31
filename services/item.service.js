@@ -1,4 +1,3 @@
-const { ServerError } = require('../helpers/server-error.helper');
 const Item = require('../models/Item');
 
 function findItems(filter = {}) {
@@ -6,17 +5,17 @@ function findItems(filter = {}) {
 }
 
 async function createItem({content, given_id, type}) {
-    const newItem = new Item();
-    newItem.content = content;
-    newItem.given_id = given_id;
-    newItem.type = type;
+    //query - condition of search
+    //update - what to change if document found
+    const query = {given_id, type},
+        update = { content: content },
+        options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
     try {
-        await newItem.validate();
-        const savedItem = await newItem.save();
+        const savedItem = await Item.findOneAndUpdate(query, update, options);
         return savedItem;
     } catch (validateError) {
-        throw new ServerError(validateError.message, 400);
+        throw new Error(validateError.message);
     }
 }
 

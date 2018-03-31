@@ -1,3 +1,9 @@
+/**
+ * Comperes between two inputs
+ * @param left
+ * @param right
+ * @returns {{isEqual: boolean, isDifferentInSize: boolean, diffs: Array}}
+ */
 function compareInputs({left, right}) {
     const result = {
         isEqual: true,
@@ -5,16 +11,22 @@ function compareInputs({left, right}) {
         diffs: [],
     };
 
-    if( left.length != right.length){
+    if (!left.length || !right.length) {
+        result.isEqual = false;
+        return result;
+    }
+
+    if (left.length !== right.length){
         result.isEqual = false;
         result.isDifferentInSize = true;
-    } else{
+    } else {
         let diffInProcss = false;
-        for(let i = 0; i< left.length; i++){
-            if(left[i] !== right[i] && diffInProcss == false){
+        // Lengths are the same
+        for(let i = 0; i < left.length; i++){
+            if(left[i] !== right[i] && diffInProcss === false){
                 result.diffs.push({ start: i, end: left.length -1});
                 diffInProcss = true;
-            } else if(left[i] === right[i] && diffInProcss == true){
+            } else if(left[i] === right[i] && diffInProcss === true){
                 diffInProcss = false;
                 let lastDifferenceArr = result.diffs[result.diffs.length -1];
                 //previous char was the last difference in this griup

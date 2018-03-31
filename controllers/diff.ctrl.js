@@ -1,24 +1,54 @@
-var _ = require('lodash');
-
 const { diff, item } = require('../services');
 
-function getItems() {
-    return item.findItems();
-}
+const LEFT = "left";
+const RIGHT = "right";
 
+/**
+ * Creates new item
+ * @param req
+ * @param res
+ * @param next
+ * @param type
+ * @returns {Promise<void>}
+ */
 async function postItem({req, res, next, type}) {
-    const result =  await item.createItem({content: req.body.content, given_id: req.params.id, type} );
-    res.send(result);
+    try{
+        let id = req.params.id;
+
+        let content = req.body.content;
+
+        if (!content) {
+            res.error("Empty content")
+        }
+
+        const result =  await item.createItem({content: content, given_id: id, type});
+        res.send(result);
+    } catch(error){
+        console.error(error)
+        next(error);
+    }
 }
 
+/**
+ * Checks if two entries in DB are same or not
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function checkDiff(req, res, next) {
-    const givenId = req.params.id;
-    const items = await item.findItems({given_id: givenId});
-    const left = items.find((item)=> item.type==='left');
-    const right = items.find((item)=> item.type==='right');
+    try{
+        const givenId = req.params.id;
+        const items = await item.findItems({given_id: givenId});
+        const left = items.find((item)=> item.type===LEFT);
+        const right = items.find((item)=> item.type===RIGHT);
 
-    const result = diff.compareInputs({left, right});
-    res.send(result);
+        const result = diff.compareInputs({left, right});
+        res.send(result);
+    } catch(error){
+        console.error(error)
+        next(error);
+    }
 }
 
 module.exports = {

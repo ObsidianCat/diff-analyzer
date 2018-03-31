@@ -8,7 +8,8 @@
   },
   "jest": {
     "verbose": true,
-    "roots": ["tests"]
+    "roots": ["tests"],
+    "globalTeardown": "./tests/global.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

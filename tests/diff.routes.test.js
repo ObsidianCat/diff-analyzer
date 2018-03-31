@@ -6,17 +6,38 @@ const ItemModel = require('../models/Item');
 
 
 const testObjectLeft = {
-    given_id:3,
+    given_id:5,
     type:'left',
     content: "test item with given id 3 and type left",
 };
 
 describe('Test the diff end point routes', () => {
+
+    describe('invalid inputs', () => {
+        test('Bad type', async () => {
+            let response = await request(app)
+                .post(`/v1/diff/123/middle`)
+                .send({"content": testObjectLeft.content});
+
+            expect(response.statusCode).toEqual(404)
+        })
+
+        test('Non numeric ID', async () => {
+            let response = await request(app)
+                .post(`/v1/diff/abc/right`)
+                .send({"content": testObjectLeft.content});
+
+            expect(response.statusCode).toEqual(500)
+        })
+    });
+
     test('The inputs data should be saved in database and contain all required properties', async () => {
         try {
-            await request(app)
+            let response = await request(app)
                 .post(`/v1/diff/${testObjectLeft.given_id}/${testObjectLeft.type}`)
                 .send({"content": testObjectLeft.content});
+
+            expect(response.statusCode).toEqual(200)
 
             const responseFromDb = await item.findItems({given_id: testObjectLeft.given_id});
             expect(responseFromDb.length).toBe(1);
@@ -31,4 +52,8 @@ describe('Test the diff end point routes', () => {
             })
         }
     });
+});
+
+afterAll(() => {
+    process.emit("close")
 });
