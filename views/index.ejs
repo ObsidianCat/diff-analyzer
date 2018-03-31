@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Diff-Analyzer</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>Diff-Analyzer</h1>
+    <p>Currently, the easies way to use the application is with Postman</p>
+    <ul>
+      <li>POST request to <strong>localhost:3000/v1/diff/1/right</strong> with type JSON/(application json) and request body
+        <code>{
+        "content": "test item 1 right"
+          }</code>
+        will add item with type equal right and given id equal 1 to the database</li>
+      <li>the same request to the url <strong>localhost:3000/v1/diff/1/left</strong> will add with type equal left and the same given id</li>
+      <li>GET request <strong>localhost:3000/v1/diff/1</strong> will return the comparison result between two items</li>
+    </ul>
   </body>
 </html>
