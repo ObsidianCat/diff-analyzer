@@ -42,11 +42,14 @@ async function checkDiff(req, res, next) {
         const items = await item.findItems({given_id: givenId});
         let result;
         if(items && items.length === 2){
+            //two items are found
             const left = items.find((item)=> item.type===LEFT);
             const right = items.find((item)=> item.type===RIGHT);
-            result = diff.compareInputs({left, right});
+            result = diff.compareInputs({left: left.content, right: right.content});
         }
         else{
+            //none or only one item is found
+            //TODO improvement - to send different response, based upon if there is only one item or none
             result = diffResponseModel();
             result.areBothItemsExist = false;
         }
