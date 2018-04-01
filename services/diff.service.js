@@ -4,7 +4,7 @@ const diffResponseModel = require('./diff-response.model');
  * Comperes between two inputs
  * @param left
  * @param right
- * @returns {{isEqual: boolean, isDifferentInSize: boolean, diffs: Array}}
+ * @returns {} with result of comparison
  */
 function compareInputs({left, right}) {
     const result = diffResponseModel();

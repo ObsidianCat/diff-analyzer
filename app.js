@@ -9,7 +9,10 @@ const indexRouter = require('./routes/index');
 const diffRouter = require('./routes/diff.routes');
 const mongoDB = require('./databases/mongodb');
 
+//create app
 const app = express();
+
+//connect to database
 mongoDB();
 
 // view engine setup

@@ -5,12 +5,12 @@ const LEFT = "left";
 const RIGHT = "right";
 
 /**
- * Creates new item
+ * Creates new item in database
  * @param req
  * @param res
  * @param next
  * @param type
- * @returns {Promise<void>}
+ * @returns created item
  */
 async function postItem({req, res, next, type}) {
     try{
@@ -25,7 +25,6 @@ async function postItem({req, res, next, type}) {
         const result =  await item.createItem({content: content, given_id: id, type});
         res.send(result);
     } catch(error){
-        console.error(error);
         next(error);
     }
 }

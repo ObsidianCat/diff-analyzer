@@ -1,10 +1,8 @@
-const diffRoutes = require('../routes/diff.routes');
 const request = require('supertest');
 const app = require('../app');
 const { item } = require('../services');
 const ItemModel = require('../models/Item');
 const diffResponseModel = require('../services/diff-response.model');
-
 
 const testObjectLeft = {
     given_id:5,
