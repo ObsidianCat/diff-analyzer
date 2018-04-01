@@ -1,3 +1,5 @@
+const diffResponseModel = require('./diff-response.model');
+
 /**
  * Comperes between two inputs
  * @param left
@@ -5,11 +7,7 @@
  * @returns {{isEqual: boolean, isDifferentInSize: boolean, diffs: Array}}
  */
 function compareInputs({left, right}) {
-    const result = {
-        isEqual: true,
-        isDifferentInSize: false,
-        diffs: [],
-    };
+    const result = diffResponseModel();
 
     if (!left.length || !right.length) {
         result.isEqual = false;

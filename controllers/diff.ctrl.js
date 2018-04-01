@@ -1,4 +1,5 @@
 const { diff, item } = require('../services');
+const diffResponseModel = require('../services/diff-response.model');
 
 const LEFT = "left";
 const RIGHT = "right";
@@ -24,7 +25,7 @@ async function postItem({req, res, next, type}) {
         const result =  await item.createItem({content: content, given_id: id, type});
         res.send(result);
     } catch(error){
-        console.error(error)
+        console.error(error);
         next(error);
     }
 }
@@ -40,13 +41,20 @@ async function checkDiff(req, res, next) {
     try{
         const givenId = req.params.id;
         const items = await item.findItems({given_id: givenId});
-        const left = items.find((item)=> item.type===LEFT);
-        const right = items.find((item)=> item.type===RIGHT);
+        let result;
+        if(items && items.length === 2){
+            const left = items.find((item)=> item.type===LEFT);
+            const right = items.find((item)=> item.type===RIGHT);
+            result = diff.compareInputs({left, right});
+        }
+        else{
+            result = diffResponseModel();
+            result.areBothItemsExist = false;
+        }
 
-        const result = diff.compareInputs({left, right});
         res.send(result);
     } catch(error){
-        console.error(error)
+        console.error(error);
         next(error);
     }
 }

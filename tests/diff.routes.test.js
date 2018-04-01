@@ -3,6 +3,7 @@ const request = require('supertest');
 const app = require('../app');
 const { item } = require('../services');
 const ItemModel = require('../models/Item');
+const diffResponseModel = require('../services/diff-response.model');
 
 
 const testObjectLeft = {
@@ -11,7 +12,7 @@ const testObjectLeft = {
     content: "test item with given id 3 and type left",
 };
 
-describe('Test the diff end point routes', () => {
+describe('Test the POST item end point routes', () => {
 
     describe('invalid inputs', () => {
         test('Bad type', async () => {
@@ -37,7 +38,7 @@ describe('Test the diff end point routes', () => {
                 .post(`/v1/diff/${testObjectLeft.given_id}/${testObjectLeft.type}`)
                 .send({"content": testObjectLeft.content});
 
-            expect(response.statusCode).toEqual(200)
+            expect(response.statusCode).toEqual(200);
 
             const responseFromDb = await item.findItems({given_id: testObjectLeft.given_id});
             expect(responseFromDb.length).toBe(1);
@@ -53,6 +54,27 @@ describe('Test the diff end point routes', () => {
         }
     });
 });
+
+describe('Test the GET - do comparison end point routes', () => {
+    test('Items with given ids are not in database', async () => {
+        try {
+            let response = await request(app)
+                .get(`/v1/diff/${testObjectLeft.given_id + testObjectLeft.given_id}`);
+
+            const model = diffResponseModel();
+            model.areBothItemsExist = false;
+
+            expect(response.statusCode).toEqual(200);
+            expect(response.body).toEqual(expect.objectContaining(model));
+
+        }
+        catch(error) {
+            throw new Error(error);
+        }
+    });
+});
+
+
 
 afterAll(() => {
     process.emit("close")

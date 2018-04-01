@@ -1,7 +1,12 @@
 const Item = require('../models/Item');
 
 function findItems(filter = {}) {
-    return Item.find(filter).lean().exec();
+    Item.find(filter).exec().then(function(data) {
+        return data;
+    })
+    .catch(function(err) {
+        return err;
+    });
 }
 
 async function createItem({content, given_id, type}) {
@@ -15,7 +20,7 @@ async function createItem({content, given_id, type}) {
         const savedItem = await Item.findOneAndUpdate(query, update, options);
         return savedItem;
     } catch (validateError) {
-        throw new Error(validateError.message);
+        return validateError;
     }
 }
 
